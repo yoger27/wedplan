@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="id" data-frame-refused-watch="" data-theme="light" __gcrremoteframetoken="fa7c75c1171d6d70a0c966d88a5c8864" style="color-scheme: light;"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wedding Planner</title>
+<style>
+:root{
+  --dark:#3F5D44; --dark2:#5C7A5C; --gold:#C7A252;
+  --pinkL:#EAF0E3; --pinkM:#D9E4D0; --cream:#FBFAF4; --input:#F6F4EA;
+  --txt:#33422F; --muted:#7c8a72; --border:#d8e0cc;
+  --green:#1e7e34; --greenBg:#d4edda; --yellow:#8a6d00; --yellowBg:#fff3cd; --red:#a5182b; --redBg:#f8d7da; --blue:#1f4e78; --blueBg:#d9e1f2;
+  --bg:var(--cream); --card:#ffffff; --text:var(--txt);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#161d15; --card:#1e281c; --text:#e9f0e2; --border:#39472f; --input:#2a3524; --pinkL:#2a3524; --pinkM:#39472f; }
+}
+:root[data-theme="dark"]{ --bg:#161d15; --card:#1e281c; --text:#e9f0e2; --border:#39472f; --input:#2a3524; --pinkL:#2a3524; --pinkM:#39472f; }
+*{box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);}
+h1,h2,h3,.label,button,select,input,.navbtn{font-family:Arial,Helvetica,sans-serif;}
+#topbar{position:sticky;top:0;z-index:20;background:var(--dark);padding:env(safe-area-inset-top,0px) 0 0 0;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+#topbar .inner{padding:14px 16px 10px;}
+#topbar h1{color:#fff;margin:0 0 2px;font-size:1.25rem;letter-spacing:.3px;}
+#topbar .sub{color:#e9c9be;font-size:.78rem;font-style:italic;}
+#tabs{display:flex;overflow-x:auto;gap:6px;padding:0 10px 10px;-webkit-overflow-scrolling:touch;}
+#tabs::-webkit-scrollbar{display:none;}
+.navbtn{flex:0 0 auto;background:var(--dark2);color:#fff;border:1px solid var(--gold);border-radius:20px;padding:7px 14px;font-size:.82rem;cursor:pointer;white-space:nowrap;opacity:.85;}
+.navbtn.active{background:var(--gold);color:var(--dark);font-weight:bold;opacity:1;}
+main{max-width:980px;margin:0 auto;padding:16px 14px 60px;}
+.section{display:none;}
+.section.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.banner{background:var(--dark);color:#fff;text-align:center;padding:14px;border-radius:10px;font-size:1.15rem;font-weight:bold;letter-spacing:.4px;margin-bottom:4px;}
+.goldline{height:4px;background:var(--gold);border-radius:2px;margin-bottom:16px;}
+.card-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px;}
+.card{border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.card .lbl{background:var(--dark);color:#fff;font-size:.68rem;font-weight:bold;text-align:center;padding:6px 4px;letter-spacing:.3px;}
+.card .val{background:var(--pinkL);color:var(--text);text-align:center;padding:10px 4px;font-size:1.05rem;font-weight:bold;word-break:break-word;}
+.section-bar{background:var(--dark2);color:#fff;padding:8px 12px;border-radius:6px;font-weight:bold;font-size:.9rem;margin:18px 0 10px;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-bottom:8px;}
+@media(max-width:520px){.field-grid{grid-template-columns:1fr;}}
+.field label{display:block;font-size:.72rem;font-weight:bold;color:var(--muted);margin-bottom:3px;}
+.field input, .field select{width:100%;padding:8px 9px;border:1px solid var(--border);border-radius:6px;background:var(--input);color:var(--text);font-size:.85rem;}
+.countdown{text-align:center;font-weight:bold;color:var(--dark);background:var(--pinkM);padding:8px;border-radius:8px;margin:10px 0 4px;font-size:.85rem;}
+:root[data-theme="dark"] .countdown, body:not([data-theme="light"]) .countdown{color:#fff;}
+.cat-block{border:1px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden;}
+.cat-head{background:var(--pinkM);padding:8px 10px;font-weight:bold;font-size:.85rem;display:flex;justify-content:space-between;align-items:center;}
+.cat-head .x{cursor:pointer;color:var(--red);font-weight:bold;font-size:.85rem;background:none;border:none;}
+table{width:100%;border-collapse:collapse;font-size:.78rem;}
+th{background:var(--pinkM);padding:6px 5px;text-align:left;font-size:.68rem;position:sticky;top:0;}
+td{padding:5px 4px;border-bottom:1px solid var(--border);}
+td input, td select{width:100%;border:1px solid var(--border);border-radius:4px;padding:5px;background:var(--input);color:var(--text);font-size:.78rem;}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tot-row td{background:var(--pinkL);font-weight:bold;}
+.rowdel{color:var(--red);background:none;border:none;font-size:1rem;cursor:pointer;}
+.pill{display:inline-block;padding:3px 8px;border-radius:12px;font-size:.7rem;font-weight:bold;}
+.pill-green{background:var(--greenBg);color:var(--green);}
+.pill-yellow{background:var(--yellowBg);color:var(--yellow);}
+.pill-red{background:var(--redBg);color:var(--red);}
+.pill-blue{background:var(--blueBg);color:var(--blue);}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;}
+.btn{background:var(--dark);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:.8rem;cursor:pointer;}
+.btn.gold{background:var(--gold);color:var(--dark);font-weight:bold;}
+.btn.outline{background:transparent;color:var(--dark);border:1px solid var(--dark);}
+:root[data-theme="dark"] .btn.outline{color:#fff;border-color:#fff;}
+.savebadge{position:fixed;bottom:14px;right:14px;background:var(--dark);color:#fff;padding:6px 12px;border-radius:16px;font-size:.7rem;opacity:0;transition:opacity .3s;pointer-events:none;font-family:Arial,sans-serif;z-index:30;}
+.savebadge.show{opacity:.92;}
+.hint{font-size:.72rem;color:var(--muted);margin:2px 0 10px;font-style:italic;}
+</style>
+</head>
+<body data-__gcrweb-annotatedpagecontent-processed="3D3393C568EEEAE2A716DFCCE06FA6AA">
+<div id="topbar">
+  <div class="inner">
+    <h1>✨ Wedding Planner</h1>
+    <div class="sub">Perencanaan pernikahan intimate — elegan &amp; terkendali</div>
+  </div>
+  <div id="tabs"><button class="navbtn " data-tab="cover">🏠 Beranda</button><button class="navbtn " data-tab="anggaran">💐 Anggaran</button><button class="navbtn " data-tab="seserahan">🎁 Seserahan</button><button class="navbtn " data-tab="tamu">👰 Tamu</button><button class="navbtn active" data-tab="vendor">🤝 Vendor</button><button class="navbtn " data-tab="admin">📋 Administrasi</button><button class="navbtn " data-tab="timeline">🗓️ Timeline</button></div>
+</div>
+<main id="app"><div class="banner">🤝 LIST VENDOR PERNIKAHAN</div><div class="goldline"></div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL ANGGARAN VENDOR</div><div class="val">Rp17.000.000</div></div>
+    <div class="card"><div class="lbl">TOTAL DP DIBAYAR</div><div class="val">Rp15.000.000</div></div>
+    <div class="card"><div class="lbl">SISA DIBAYAR</div><div class="val">Rp2.000.000</div></div>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>No</th><th>Kategori</th><th>Nama Vendor</th><th>Kontak</th><th>Harga</th><th>DP</th><th>Sisa</th><th>Catatan</th><th></th></tr></thead><tbody><tr data-i="0">
+      <td>1</td>
+      <td><input class="f-kategori" value="Venue"></td>
+      <td><input class="f-nama" value="Gedung Harmoni"></td>
+      <td><input class="f-kontak" value="0812xxxxxxx"></td>
+      <td><input class="f-harga" type="number" value="10000000"></td>
+      <td><input class="f-dp" type="number" value="10000000"></td>
+      <td style="white-space:nowrap;">Rp0</td>
+      <td><input class="f-catatan" value="Lunas"></td>
+      <td><button class="rowdel" data-act="del" data-i="0">🗑</button></td>
+    </tr><tr data-i="1">
+      <td>2</td>
+      <td><input class="f-kategori" value="Dekorasi"></td>
+      <td><input class="f-nama" value="Blossom Decoration"></td>
+      <td><input class="f-kontak" value="0813xxxxxxx"></td>
+      <td><input class="f-harga" type="number" value="7000000"></td>
+      <td><input class="f-dp" type="number" value="5000000"></td>
+      <td style="white-space:nowrap;">Rp2.000.000</td>
+      <td><input class="f-catatan" value=""></td>
+      <td><button class="rowdel" data-act="del" data-i="1">🗑</button></td>
+    </tr></tbody></table></div><div class="btnrow"><button class="btn gold" id="addrow">+ Tambah Vendor</button></div></main>
+<div class="savebadge" id="saveBadge">Tersimpan ✓</div>
+
+<script id="seed-data" type="application/json">{"profile":{"nama1":"","nama2":"","tanggal":"2026-09-28","lokasi":"","tema":"","targetTamu":60},"anggaran":{"target":100000,"categories":[{"name":"🏛️ Tempat","items":[{"item":"Venue","status":"Done","total":10000000,"dp":10000000},{"item":"Dekorasi","status":"Proses","total":7000000,"dp":5000000},{"item":"Tenda & Kursi","status":"Proses","total":8000000,"dp":5000000},{"item":"","status":"Belum","total":0,"dp":0}]},{"name":"💄 MUA & Kecantikan","items":[{"item":"Rias Pengantin + Set Baju","status":"Done","total":5000000,"dp":5000000},{"item":"Nail Art","status":"Done","total":200000,"dp":200000},{"item":"","status":"Belum","total":0,"dp":0}]},{"name":"💍 Mahar & Cincin","items":[{"item":"Perhiasan / Mahar","status":"Done","total":8000000,"dp":8000000},{"item":"Cincin Nikah","status":"Done","total":8000000,"dp":8000000}]},{"name":"📸 Dokumentasi","items":[{"item":"Fotografer Hari-H","status":"Done","total":10000000,"dp":10000000},{"item":"Videografer","status":"Done","total":8000000,"dp":8000000}]},{"name":"🍽️ Makanan & Minuman","items":[{"item":"Catering Tamu","status":"Done","total":3000000,"dp":3000000},{"item":"Snack Box","status":"Done","total":1000000,"dp":1000000}]},{"name":"💌 Undangan & Souvenir","items":[{"item":"Cetak Undangan","status":"Done","total":1000000,"dp":1000000},{"item":"Souvenir Tamu","status":"Done","total":2000000,"dp":2000000}]}]},"seserahan":{"target":10000000,"categories":[{"name":"🧴 Skincare","items":[{"barang":"Facial Wash","brand":"Skintific","anggaran":200000,"realisasi":1450000},{"barang":"Toner","brand":"Skintific","anggaran":250000,"realisasi":150000},{"barang":"Serum","brand":"Skintific","anggaran":40000,"realisasi":0},{"barang":"","brand":"","anggaran":0,"realisasi":0,"link":""}]},{"name":"👗 Dress & Busana","items":[{"barang":"Dress","brand":"Zara","anggaran":1000000,"realisasi":950000},{"barang":"Hijab","brand":"Elzatta","anggaran":200000,"realisasi":130000}]},{"name":"👜 Tas & Sepatu","items":[{"barang":"Tas Fashion","brand":"Oneda","anggaran":600000,"realisasi":500000}]}]},"tamu":[{"nama":"Rizky","dari":"CPW","hubungan":"Teman Kerja","jenis":"Cetak","kursi":1,"status":"Terkirim"},{"nama":"Rian","dari":"CPP","hubungan":"Teman Sekolah","jenis":"Digital","kursi":2,"status":"Belum Terkirim"},{"nama":"","dari":"CPW","hubungan":"Keluarga","jenis":"Cetak","kursi":1,"status":"Belum Terkirim"}],"vendor":[{"kategori":"Venue","nama":"Gedung Harmoni","kontak":"0812xxxxxxx","harga":10000000,"dp":10000000,"catatan":"Lunas"},{"kategori":"Dekorasi","nama":"Blossom Decoration","kontak":"0813xxxxxxx","harga":7000000,"dp":5000000,"catatan":""}],"administrasi":{"wanita":[{"nama":"Fotokopi KTP","biaya":10000,"status":"Sudah"},{"nama":"Fotokopi KK","biaya":10000,"status":"Sudah"},{"nama":"Surat keterangan sehat","biaya":150000,"status":"Belum"}],"pria":[{"nama":"Fotokopi KTP","biaya":10000,"status":"Sudah"},{"nama":"Fotokopi KK","biaya":10000,"status":"Sudah"}]},"timeline":[{"tugas":"Tentukan tanggal & lokasi acara","tenggat":"H-180","pic":"Kedua mempelai","prioritas":"Tinggi","status":"Selesai","catatan":""},{"tugas":"Booking vendor catering","tenggat":"H-120","pic":"","prioritas":"Tinggi","status":"Belum Mulai","catatan":""},{"tugas":"Kirim undangan","tenggat":"H-45","pic":"","prioritas":"Sedang","status":"Belum Mulai","catatan":""}]}</script>
+
+<script>
+(function(){
+"use strict";
+const fmt = n => "Rp" + (Math.round(Number(n)||0)).toLocaleString("id-ID");
+const uid = () => Math.random().toString(36).slice(2,9);
+
+let DATA;
+try{ DATA = JSON.parse(document.getElementById("seed-data").textContent); }
+catch(e){ DATA = {}; }
+
+// ---- local convenience persistence (per-device, immediate) ----
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem("wp_data");
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+function saveLocal(){
+  try{ localStorage.setItem("wp_data", JSON.stringify(DATA)); }catch(e){}
+}
+const local = loadLocal();
+if(local) DATA = local;
+
+// ---- shared artifact persistence (cross-device, debounced) ----
+let artifactNs = null;
+(async function initArtifact(){
+  try{
+    if(window.claude && window.claude.use){
+      artifactNs = await window.claude.use("artifact");
+    }
+  }catch(e){ artifactNs = null; }
+})();
+
+let saveTimer = null;
+function scheduleSave(){
+  saveLocal();
+  showBadge();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(publishState, 1400);
+}
+function showBadge(){
+  const b = document.getElementById("saveBadge");
+  b.classList.add("show");
+  clearTimeout(showBadge._t);
+  showBadge._t = setTimeout(()=>b.classList.remove("show"), 1200);
+}
+async function publishState(){
+  if(!artifactNs) return;
+  try{
+    const html = buildFullDocument();
+    await artifactNs.publish(html);
+  }catch(e){ /* conflict or offline: silently keep local copy */ }
+}
+function buildFullDocument(){
+  const doc = document.documentElement.cloneNode(true);
+  const seed = doc.querySelector("#seed-data");
+  if(seed) seed.textContent = JSON.stringify(DATA);
+  return "<!DOCTYPE html>\n" + doc.outerHTML;
+}
+
+// ================= TAB DEFINITIONS =================
+const TABS = [
+  {id:"cover", label:"🏠 Beranda"},
+  {id:"anggaran", label:"💐 Anggaran"},
+  {id:"seserahan", label:"🎁 Seserahan"},
+  {id:"tamu", label:"👰 Tamu"},
+  {id:"vendor", label:"🤝 Vendor"},
+  {id:"admin", label:"📋 Administrasi"},
+  {id:"timeline", label:"🗓️ Timeline"},
+];
+let activeTab = "cover";
+
+function renderTabs(){
+  const el = document.getElementById("tabs");
+  el.innerHTML = TABS.map(t=>`<button class="navbtn ${t.id===activeTab?'active':''}" data-tab="${t.id}">${t.label}</button>`).join("");
+  el.querySelectorAll("button").forEach(b=>b.addEventListener("click", ()=>{ activeTab=b.dataset.tab; renderApp(); window.scrollTo({top:0,behavior:"smooth"}); }));
+}
+
+// ================= HELPERS: budget category totals =================
+function catTotal(items, field){ return items.reduce((s,it)=>s+(Number(it[field])||0),0); }
+function anggaranTotals(){
+  let realisasi = 0;
+  DATA.anggaran.categories.forEach(c=>{ realisasi += catTotal(c.items,"total"); });
+  return { target: Number(DATA.anggaran.target)||0, realisasi, sisa:(Number(DATA.anggaran.target)||0)-realisasi };
+}
+function seserahanTotals(){
+  let realisasi = 0;
+  DATA.seserahan.categories.forEach(c=>{ realisasi += catTotal(c.items,"realisasi"); });
+  return { target: Number(DATA.seserahan.target)||0, realisasi, sisa:(Number(DATA.seserahan.target)||0)-realisasi };
+}
+function vendorTotals(){
+  const harga = DATA.vendor.reduce((s,v)=>s+(Number(v.harga)||0),0);
+  const dp = DATA.vendor.reduce((s,v)=>s+(Number(v.dp)||0),0);
+  return { harga, dp, sisa:harga-dp };
+}
+function tamuTotals(){
+  return {
+    total: DATA.tamu.length,
+    kursi: DATA.tamu.reduce((s,t)=>s+(Number(t.kursi)||0),0),
+    terkirim: DATA.tamu.filter(t=>t.status==="Terkirim").length,
+    belum: DATA.tamu.filter(t=>t.status!=="Terkirim").length
+  };
+}
+function timelineTotals(){
+  return {
+    total: DATA.timeline.length,
+    selesai: DATA.timeline.filter(t=>t.status==="Selesai").length,
+    belum: DATA.timeline.filter(t=>t.status!=="Selesai").length
+  };
+}
+function pill(status){
+  const map = {
+    "Done":"pill-green","Sudah":"pill-green","Terkirim":"pill-green","Selesai":"pill-green",
+    "Proses":"pill-yellow","Sedang Berjalan":"pill-yellow",
+    "Belum":"pill-red","Belum Terkirim":"pill-red","Belum Mulai":"pill-red",
+    "CPW":"pill-red","CPP":"pill-blue"
+  };
+  return `<span class="pill ${map[status]||'pill-blue'}">${status}</span>`;
+}
+
+// ================= RENDER: COVER =================
+function daysLeft(){
+  if(!DATA.profile.tanggal) return null;
+  const target = new Date(DATA.profile.tanggal+"T00:00:00");
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((target-today)/86400000);
+  return diff;
+}
+function renderCover(){
+  const a = anggaranTotals(), s = seserahanTotals(), v = vendorTotals(), t = tamuTotals(), tl = timelineTotals();
+  const dleft = daysLeft();
+  const countdownTxt = DATA.profile.tanggal ? (dleft>=0 ? `${dleft} hari menuju hari bahagia 💕` : `Sudah lewat ${Math.abs(dleft)} hari — Selamat menempuh hidup baru! 🎉`) : "Isi tanggal pernikahan di bawah untuk melihat hitung mundur";
+  return `
+  <div class="banner">✨ WEDDING PLANNER ✨</div>
+  <div class="goldline"></div>
+  <div class="field-grid">
+    <div class="field"><label>Mempelai Wanita</label><input id="p_nama1" value="${esc(DATA.profile.nama1)}" placeholder="Nama mempelai wanita"></div>
+    <div class="field"><label>Mempelai Pria</label><input id="p_nama2" value="${esc(DATA.profile.nama2)}" placeholder="Nama mempelai pria"></div>
+    <div class="field"><label>Tanggal Pernikahan</label><input type="date" id="p_tanggal" value="${esc(DATA.profile.tanggal)}"></div>
+    <div class="field"><label>Lokasi Acara</label><input id="p_lokasi" value="${esc(DATA.profile.lokasi)}" placeholder="Lokasi"></div>
+    <div class="field"><label>Tema / Warna</label><input id="p_tema" value="${esc(DATA.profile.tema)}" placeholder="mis. Dusty Rose & Gold"></div>
+    <div class="field"><label>Target Jumlah Tamu</label><input type="number" id="p_target" value="${DATA.profile.targetTamu||0}"></div>
+  </div>
+  <div class="countdown">${countdownTxt}</div>
+
+  <div class="section-bar">RINGKASAN ANGGARAN</div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL ANGGARAN</div><div class="val">${fmt(a.target)}</div></div>
+    <div class="card"><div class="lbl">TOTAL REALISASI</div><div class="val">${fmt(a.realisasi)}</div></div>
+    <div class="card"><div class="lbl">SISA ANGGARAN</div><div class="val">${fmt(a.sisa)}</div></div>
+  </div>
+
+  <div class="section-bar">RINGKASAN SESERAHAN</div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">BUDGET SESERAHAN</div><div class="val">${fmt(s.target)}</div></div>
+    <div class="card"><div class="lbl">REALISASI SESERAHAN</div><div class="val">${fmt(s.realisasi)}</div></div>
+    <div class="card"><div class="lbl">SISA SESERAHAN</div><div class="val">${fmt(s.sisa)}</div></div>
+  </div>
+
+  <div class="section-bar">RINGKASAN TAMU</div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL TAMU</div><div class="val">${t.total}</div></div>
+    <div class="card"><div class="lbl">TERKIRIM</div><div class="val">${t.terkirim}</div></div>
+    <div class="card"><div class="lbl">TOTAL KURSI</div><div class="val">${t.kursi}</div></div>
+  </div>
+
+  <div class="section-bar">RINGKASAN VENDOR</div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">ANGGARAN VENDOR</div><div class="val">${fmt(v.harga)}</div></div>
+    <div class="card"><div class="lbl">DP DIBAYAR</div><div class="val">${fmt(v.dp)}</div></div>
+    <div class="card"><div class="lbl">SISA DIBAYAR</div><div class="val">${fmt(v.sisa)}</div></div>
+  </div>
+
+  <div class="section-bar">RINGKASAN TUGAS PERSIAPAN</div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL TUGAS</div><div class="val">${tl.total}</div></div>
+    <div class="card"><div class="lbl">SELESAI</div><div class="val">${tl.selesai}</div></div>
+    <div class="card"><div class="lbl">BELUM SELESAI</div><div class="val">${tl.belum}</div></div>
+  </div>
+  `;
+}
+function wireCover(){
+  const map = {p_nama1:"nama1",p_nama2:"nama2",p_tanggal:"tanggal",p_lokasi:"lokasi",p_tema:"tema"};
+  Object.keys(map).forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener("input", ()=>{ DATA.profile[map[id]] = el.value; scheduleSave(); if(id==="p_tanggal") renderApp(); });
+  });
+  const tgt = document.getElementById("p_target");
+  if(tgt) tgt.addEventListener("input", ()=>{ DATA.profile.targetTamu = Number(tgt.value)||0; scheduleSave(); });
+}
+
+// ================= RENDER: ANGGARAN & SESERAHAN (generic budget) =================
+function renderBudget(kind){
+  const isA = kind==="anggaran";
+  const store = DATA[kind];
+  const totals = isA ? anggaranTotals() : seserahanTotals();
+  let html = `
+  <div class="banner">${isA?'💐 BUDGET WEDDING PLANNER':'🎁 LIST SESERAHAN'}</div>
+  <div class="goldline"></div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">${isA?'ANGGARAN (TARGET)':'BUDGET SESERAHAN'}</div><div class="val" style="display:flex;align-items:center;justify-content:center;gap:2px;line-height:1;"><span style="line-height:1;">Rp</span><input type="text" inputmode="numeric" id="bt_target" value="${store.target?Number(store.target).toLocaleString('id-ID'):''}" style="width:100%;text-align:center;border:none;background:transparent;font-weight:bold;font-size:1rem;font-family:inherit;line-height:1;color:inherit;padding:0;margin:0;vertical-align:baseline;"></div></div>
+    <div class="card"><div class="lbl">TOTAL REALISASI</div><div class="val">${fmt(totals.realisasi)}</div></div>
+    <div class="card"><div class="lbl">SISA</div><div class="val" id="bt_sisa">${fmt(totals.sisa)}</div></div>
+  </div>`;
+  store.categories.forEach((cat, ci)=>{
+    const totalCol = isA ? catTotal(cat.items,"total") : catTotal(cat.items,"anggaran");
+    const realCol = isA ? null : catTotal(cat.items,"realisasi");
+    html += `<div class="cat-block" data-ci="${ci}">
+      <div class="cat-head"><input class="cat-name" value="${esc(cat.name)}" style="background:transparent;border:none;font-weight:bold;font-family:inherit;width:75%;color:inherit;"><button class="x" data-act="delcat" data-ci="${ci}">✕ Hapus Kategori</button></div>
+      <div class="tbl-wrap"><table><thead><tr>
+        ${isA ? "<th>Item</th><th>Status</th><th>Total (Rp)</th><th>DP (Rp)</th><th>Sisa</th><th></th>"
+              : "<th>Barang</th><th>Brand</th><th>Anggaran</th><th>Realisasi</th><th>Link Toko</th><th></th>"}
+      </tr></thead><tbody>`;
+    cat.items.forEach((it, ii)=>{
+      if(isA){
+        const sisa = (Number(it.total)||0)-(Number(it.dp)||0);
+        const sisaTxt = (!it.total) ? "-" : (sisa<=0 ? "Lunas" : "Sisa "+fmt(sisa));
+        html += `<tr data-ci="${ci}" data-ii="${ii}">
+          <td><input class="f-item" value="${esc(it.item)}"></td>
+          <td><select class="f-status">${["Done","Proses","Belum"].map(s=>`<option ${it.status===s?'selected':''}>${s}</option>`).join("")}</select></td>
+          <td><input class="f-total" type="number" value="${it.total||''}"></td>
+          <td><input class="f-dp" type="number" value="${it.dp||''}"></td>
+          <td style="white-space:nowrap;font-size:.72rem;">${sisaTxt}</td>
+          <td><button class="rowdel" data-act="delitem" data-ci="${ci}" data-ii="${ii}">🗑</button></td>
+        </tr>`;
+      } else {
+        html += `<tr data-ci="${ci}" data-ii="${ii}">
+          <td><input class="f-barang" value="${esc(it.barang)}"></td>
+          <td><input class="f-brand" value="${esc(it.brand)}"></td>
+          <td><input class="f-anggaran" type="number" value="${it.anggaran||''}"></td>
+          <td><input class="f-realisasi" type="number" value="${it.realisasi||''}"></td>
+          <td><div style="display:flex;gap:4px;align-items:center;">
+            <input class="f-link" type="url" placeholder="https://..." value="${esc(it.link||'')}" style="min-width:90px;">
+            <button type="button" class="linkopen" title="Buka link toko">🔗</button>
+          </div></td>
+          <td><button class="rowdel" data-act="delitem" data-ci="${ci}" data-ii="${ii}">🗑</button></td>
+        </tr>`;
+      }
+    });
+    html += `</tbody><tfoot><tr class="tot-row">
+      ${isA ? `<td colspan="2">TOTAL KATEGORI</td><td>${fmt(totalCol)}</td><td colspan="3"></td>`
+            : `<td colspan="2">TOTAL KATEGORI</td><td>${fmt(totalCol)}</td><td>${fmt(realCol)}</td><td></td><td></td>`}
+    </tr></tfoot></table></div>
+    <div style="padding:8px 10px;"><button class="btn outline" data-act="additem" data-ci="${ci}" style="font-size:.75rem;padding:5px 10px;">+ Tambah Item</button></div>
+    </div>`;
+  });
+  html += `<div class="btnrow"><button class="btn gold" id="addcat">+ Tambah Kategori</button></div>`;
+  return html;
+}
+function wireBudget(kind){
+  const store = DATA[kind];
+  const tgt = document.getElementById("bt_target");
+  if(tgt) tgt.addEventListener("input", ()=>{
+    const raw = tgt.value.replace(/[^0-9]/g,"");
+    const num = Number(raw)||0;
+    store.target = num;
+    const formatted = num ? num.toLocaleString("id-ID") : "";
+    tgt.value = formatted;
+    tgt.setSelectionRange(formatted.length, formatted.length);
+    const totals = kind==="anggaran" ? anggaranTotals() : seserahanTotals();
+    const sisaEl = document.getElementById("bt_sisa");
+    if(sisaEl) sisaEl.textContent = fmt(totals.sisa);
+    scheduleSave();
+  });
+
+  document.querySelectorAll(".cat-name").forEach((el,i)=>{
+    el.addEventListener("input", ()=>{ store.categories[i].name = el.value; scheduleSave(); });
+  });
+  document.querySelectorAll('[data-act="delcat"]').forEach(b=>{
+    b.addEventListener("click", ()=>{ if(confirm("Hapus kategori ini beserta isinya?")){ store.categories.splice(Number(b.dataset.ci),1); scheduleSave(); renderApp(); } });
+  });
+  document.querySelectorAll('[data-act="additem"]').forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const ci = Number(b.dataset.ci);
+      store.categories[ci].items.push(kind==="anggaran" ? {item:"",status:"Belum",total:0,dp:0} : {barang:"",brand:"",anggaran:0,realisasi:0,link:""});
+      scheduleSave(); renderApp();
+    });
+  });
+  document.getElementById("addcat").addEventListener("click", ()=>{
+    store.categories.push({name:"Kategori Baru", items:[]});
+    scheduleSave(); renderApp();
+  });
+  document.querySelectorAll('[data-act="delitem"]').forEach(b=>{
+    b.addEventListener("click", ()=>{ store.categories[Number(b.dataset.ci)].items.splice(Number(b.dataset.ii),1); scheduleSave(); renderApp(); });
+  });
+  document.querySelectorAll("tr[data-ci]").forEach(tr=>{
+    const ci = Number(tr.dataset.ci), ii = Number(tr.dataset.ii);
+    tr.querySelectorAll("input,select").forEach(inp=>{
+      const field = inp.className.replace("f-","");
+      inp.addEventListener("input", ()=>{
+        const val = inp.type==="number" ? Number(inp.value)||0 : inp.value;
+        store.categories[ci].items[ii][field] = val;
+        scheduleSave();
+        if(inp.type==="number" || inp.tagName==="SELECT") renderApp(); else {/* keep focus for text */}
+      });
+    });
+  });
+  document.querySelectorAll(".linkopen").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const input = btn.previousElementSibling;
+      let url = (input.value||"").trim();
+      if(!url){ alert("Isi dulu link toko/pembayarannya ya."); return; }
+      if(!/^https?:\/\//i.test(url)) url = "https://" + url;
+      window.open(url, "_blank", "noopener");
+    });
+  });
+}
+
+// ================= RENDER: TAMU =================
+function renderTamu(){
+  const t = tamuTotals();
+  let html = `<div class="banner">👰 DAFTAR TAMU UNDANGAN</div><div class="goldline"></div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL TAMU</div><div class="val">${t.total}</div></div>
+    <div class="card"><div class="lbl">TOTAL KURSI</div><div class="val">${t.kursi}</div></div>
+    <div class="card"><div class="lbl">TERKIRIM/BELUM</div><div class="val" style="font-size:.85rem;">${t.terkirim} / ${t.belum}</div></div>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>No</th><th>Nama</th><th>Dari</th><th>Hubungan</th><th>Jenis</th><th>Kursi</th><th>Status</th><th></th></tr></thead><tbody>`;
+  DATA.tamu.forEach((g,i)=>{
+    html += `<tr data-i="${i}">
+      <td>${i+1}</td>
+      <td><input class="f-nama" value="${esc(g.nama)}"></td>
+      <td><select class="f-dari">${["CPW","CPP"].map(o=>`<option ${g.dari===o?'selected':''}>${o}</option>`).join("")}</select></td>
+      <td><select class="f-hubungan">${["Keluarga","Teman Kerja","Teman Sekolah","Tetangga","Lainnya"].map(o=>`<option ${g.hubungan===o?'selected':''}>${o}</option>`).join("")}</select></td>
+      <td><select class="f-jenis">${["Cetak","Digital"].map(o=>`<option ${g.jenis===o?'selected':''}>${o}</option>`).join("")}</select></td>
+      <td><input class="f-kursi" type="number" value="${g.kursi||0}" style="width:52px;"></td>
+      <td><select class="f-status">${["Terkirim","Belum Terkirim"].map(o=>`<option ${g.status===o?'selected':''}>${o}</option>`).join("")}</select></td>
+      <td><button class="rowdel" data-act="del" data-i="${i}">🗑</button></td>
+    </tr>`;
+  });
+  html += `</tbody></table></div><div class="btnrow"><button class="btn gold" id="addrow">+ Tambah Tamu</button></div>`;
+  return html;
+}
+function wireSimpleList(arr, prefixSelector, rerenderOnChange){
+  document.querySelectorAll(`tr[data-i]`).forEach(tr=>{
+    const i = Number(tr.dataset.i);
+    tr.querySelectorAll("input,select").forEach(inp=>{
+      const field = inp.className.replace("f-","");
+      inp.addEventListener("input", ()=>{
+        arr[i][field] = inp.type==="number" ? Number(inp.value)||0 : inp.value;
+        scheduleSave();
+        if(rerenderOnChange) renderApp();
+      });
+    });
+  });
+  document.querySelectorAll('[data-act="del"]').forEach(b=>{
+    b.addEventListener("click", ()=>{ arr.splice(Number(b.dataset.i),1); scheduleSave(); renderApp(); });
+  });
+}
+
+// ================= RENDER: VENDOR =================
+function renderVendor(){
+  const v = vendorTotals();
+  let html = `<div class="banner">🤝 LIST VENDOR PERNIKAHAN</div><div class="goldline"></div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL ANGGARAN VENDOR</div><div class="val">${fmt(v.harga)}</div></div>
+    <div class="card"><div class="lbl">TOTAL DP DIBAYAR</div><div class="val">${fmt(v.dp)}</div></div>
+    <div class="card"><div class="lbl">SISA DIBAYAR</div><div class="val">${fmt(v.sisa)}</div></div>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>No</th><th>Kategori</th><th>Nama Vendor</th><th>Kontak</th><th>Harga</th><th>DP</th><th>Sisa</th><th>Catatan</th><th></th></tr></thead><tbody>`;
+  DATA.vendor.forEach((vd,i)=>{
+    const sisa = (Number(vd.harga)||0)-(Number(vd.dp)||0);
+    html += `<tr data-i="${i}">
+      <td>${i+1}</td>
+      <td><input class="f-kategori" value="${esc(vd.kategori)}"></td>
+      <td><input class="f-nama" value="${esc(vd.nama)}"></td>
+      <td><input class="f-kontak" value="${esc(vd.kontak)}"></td>
+      <td><input class="f-harga" type="number" value="${vd.harga||0}"></td>
+      <td><input class="f-dp" type="number" value="${vd.dp||0}"></td>
+      <td style="white-space:nowrap;">${fmt(sisa)}</td>
+      <td><input class="f-catatan" value="${esc(vd.catatan)}"></td>
+      <td><button class="rowdel" data-act="del" data-i="${i}">🗑</button></td>
+    </tr>`;
+  });
+  html += `</tbody></table></div><div class="btnrow"><button class="btn gold" id="addrow">+ Tambah Vendor</button></div>`;
+  return html;
+}
+
+// ================= RENDER: ADMINISTRASI =================
+function renderAdmin(){
+  const totW = DATA.administrasi.wanita.reduce((s,x)=>s+(Number(x.biaya)||0),0);
+  const totP = DATA.administrasi.pria.reduce((s,x)=>s+(Number(x.biaya)||0),0);
+  function block(list, key, title){
+    let h = `<div class="section-bar">${title}</div><div class="tbl-wrap"><table><thead><tr><th>No</th><th>Syarat</th><th>Biaya</th><th>Status</th><th></th></tr></thead><tbody>`;
+    list.forEach((x,i)=>{
+      h += `<tr data-i="${i}" data-key="${key}">
+        <td>${i+1}</td>
+        <td><input class="f-nama" value="${esc(x.nama)}"></td>
+        <td><input class="f-biaya" type="number" value="${x.biaya||0}"></td>
+        <td><select class="f-status">${["Sudah","Belum"].map(o=>`<option ${x.status===o?'selected':''}>${o}</option>`).join("")}</select></td>
+        <td><button class="rowdel" data-act="del" data-key="${key}" data-i="${i}">🗑</button></td>
+      </tr>`;
+    });
+    h += `<tr class="tot-row"><td colspan="2">TOTAL</td><td>${fmt(key==="wanita"?totW:totP)}</td><td colspan="2"></td></tr>`;
+    h += `</tbody></table></div><div class="btnrow"><button class="btn outline" data-act="add" data-key="${key}" style="font-size:.75rem;padding:5px 10px;">+ Tambah Syarat</button></div>`;
+    return h;
+  }
+  return `<div class="banner">📋 ADMINISTRASI PERSIAPAN PERNIKAHAN</div><div class="goldline"></div>`
+    + block(DATA.administrasi.wanita,"wanita","SYARAT CALON PENGANTIN WANITA")
+    + block(DATA.administrasi.pria,"pria","SYARAT CALON PENGANTIN PRIA")
+    + `<div class="section-bar">ALUR PENDAFTARAN PERNIKAHAN KE KUA</div>
+       <ol style="font-size:.82rem;line-height:1.7;padding-left:20px;">
+       <li>Datang ke RT/RW mengurus surat pengantar nikah (bawa KK dan KTP)</li>
+       <li>Pemeriksaan kesehatan calon pengantin &amp; memperoleh surat keterangan sehat</li>
+       <li>Datang ke Kelurahan untuk mendapatkan surat N1–N4</li>
+       <li>Ajukan pendaftaran kehendak nikah secara online (SIMKAH) atau langsung ke KUA</li>
+       <li>Ikuti bimbingan perkawinan sebagai bagian dari proses sebelum pernikahan</li>
+       </ol>`;
+}
+function wireAdmin(){
+  document.querySelectorAll("tr[data-key]").forEach(tr=>{
+    const key = tr.dataset.key, i = Number(tr.dataset.i);
+    tr.querySelectorAll("input,select").forEach(inp=>{
+      const field = inp.className.replace("f-","");
+      inp.addEventListener("input", ()=>{
+        DATA.administrasi[key][i][field] = inp.type==="number" ? Number(inp.value)||0 : inp.value;
+        scheduleSave();
+        if(inp.type==="number"||inp.tagName==="SELECT") renderApp();
+      });
+    });
+  });
+  document.querySelectorAll('[data-act="del"]').forEach(b=>{
+    b.addEventListener("click", ()=>{ DATA.administrasi[b.dataset.key].splice(Number(b.dataset.i),1); scheduleSave(); renderApp(); });
+  });
+  document.querySelectorAll('[data-act="add"]').forEach(b=>{
+    b.addEventListener("click", ()=>{ DATA.administrasi[b.dataset.key].push({nama:"",biaya:0,status:"Belum"}); scheduleSave(); renderApp(); });
+  });
+}
+
+// ================= RENDER: TIMELINE =================
+function renderTimeline(){
+  const tl = timelineTotals();
+  let html = `<div class="banner">🗓️ TIMELINE PERSIAPAN PERNIKAHAN</div><div class="goldline"></div>
+  <div class="card-row">
+    <div class="card"><div class="lbl">TOTAL TUGAS</div><div class="val">${tl.total}</div></div>
+    <div class="card"><div class="lbl">SELESAI</div><div class="val">${tl.selesai}</div></div>
+    <div class="card"><div class="lbl">BELUM SELESAI</div><div class="val">${tl.belum}</div></div>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>Tugas</th><th>Tenggat</th><th>PIC</th><th>Prioritas</th><th>Status</th><th></th></tr></thead><tbody>`;
+  DATA.timeline.forEach((x,i)=>{
+    html += `<tr data-i="${i}">
+      <td><input class="f-tugas" value="${esc(x.tugas)}"></td>
+      <td><input class="f-tenggat" value="${esc(x.tenggat)}" style="width:70px;"></td>
+      <td><input class="f-pic" value="${esc(x.pic)}"></td>
+      <td><select class="f-prioritas">${["Tinggi","Sedang","Rendah"].map(o=>`<option ${x.prioritas===o?'selected':''}>${o}</option>`).join("")}</select></td>
+      <td><select class="f-status">${["Belum Mulai","Sedang Berjalan","Selesai"].map(o=>`<option ${x.status===o?'selected':''}>${o}</option>`).join("")}</select></td>
+      <td><button class="rowdel" data-act="del" data-i="${i}">🗑</button></td>
+    </tr>`;
+  });
+  html += `</tbody></table></div><div class="btnrow"><button class="btn gold" id="addrow">+ Tambah Tugas</button></div>`;
+  return html;
+}
+
+// ================= MASTER RENDER =================
+function esc(s){ return (s===undefined||s===null?"":String(s)).replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+function renderApp(){
+  renderTabs();
+  const app = document.getElementById("app");
+  if(activeTab==="cover"){ app.innerHTML = renderCover(); wireCover(); }
+  else if(activeTab==="anggaran"){ app.innerHTML = renderBudget("anggaran"); wireBudget("anggaran"); }
+  else if(activeTab==="seserahan"){ app.innerHTML = renderBudget("seserahan"); wireBudget("seserahan"); }
+  else if(activeTab==="tamu"){
+    app.innerHTML = renderTamu();
+    wireSimpleList(DATA.tamu, "tr[data-i]", true);
+    document.getElementById("addrow").addEventListener("click", ()=>{ DATA.tamu.push({nama:"",dari:"CPW",hubungan:"Keluarga",jenis:"Cetak",kursi:1,status:"Belum Terkirim"}); scheduleSave(); renderApp(); });
+  }
+  else if(activeTab==="vendor"){
+    app.innerHTML = renderVendor();
+    wireSimpleList(DATA.vendor, "tr[data-i]", true);
+    document.getElementById("addrow").addEventListener("click", ()=>{ DATA.vendor.push({kategori:"",nama:"",kontak:"",harga:0,dp:0,catatan:""}); scheduleSave(); renderApp(); });
+  }
+  else if(activeTab==="admin"){ app.innerHTML = renderAdmin(); wireAdmin(); }
+  else if(activeTab==="timeline"){
+    app.innerHTML = renderTimeline();
+    wireSimpleList(DATA.timeline, "tr[data-i]", true);
+    document.getElementById("addrow").addEventListener("click", ()=>{ DATA.timeline.push({tugas:"",tenggat:"",pic:"",prioritas:"Sedang",status:"Belum Mulai",catatan:""}); scheduleSave(); renderApp(); });
+  }
+}
+
+renderApp();
+})();
+</script>
+
+
+</body></html>
